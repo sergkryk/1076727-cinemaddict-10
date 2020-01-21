@@ -14,6 +14,7 @@ import {renderElement} from './utils/render';
 import {taskCount, ExtraHeadings} from './const';
 
 import {generateFilters} from './mock/filter';
+import {returnMovieCards} from './mock/movie-card';
 
 // const AUTHORIZATION = `Basic dXNl91BwYXJzd29yZAo=`;
 // const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
@@ -41,9 +42,9 @@ renderElement(filmsSectionComponent.getElement(), filmsListComponent);
 
 const filmCardContainer = filmsListComponent.getElement().querySelector(`.films-list__container`);
 
-for (let i = 0; i < taskCount; i++) {
-  renderElement(filmCardContainer, new FilmCardComponent());
-}
+const movieCards = returnMovieCards(20);
+
+movieCards.map((element) => renderElement(filmCardContainer, new FilmCardComponent(element)));
 
 const showMoreButtonComponent = new ShowMoreButtonComponent();
 renderElement(filmsListComponent.getElement(), showMoreButtonComponent);
@@ -56,13 +57,20 @@ renderElement(filmsSection, filmsExtraRateComponent);
 const filmsExtraCommentComponent = new FilmsExtraComponent(ExtraHeadings.COMMENT);
 renderElement(filmsSection, filmsExtraCommentComponent);
 
-for (let i = 0; i < taskCount - 3; i++) {
-  renderElement(filmsExtraRateComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent());
-}
+movieCards
+  .slice()
+  .sort((a, b) => b.rating - a.rating)
+  .slice(0, 2)
+  .map((element) => renderElement(filmsExtraRateComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent(element)))
+;
 
-for (let i = 0; i < taskCount - 3; i++) {
-  renderElement(filmsExtraCommentComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent());
-}
+movieCards
+  .slice()
+  .sort((a, b) => b.comments.length - a.comments.length)
+  .slice(0, 2)
+  .map((element) => renderElement(filmsExtraCommentComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent(element)))
+;
+
 
 // const api = new API(END_POINT, AUTHORIZATION);
 // api.getFilms();
