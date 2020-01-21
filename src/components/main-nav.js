@@ -1,23 +1,29 @@
 import AbstractComponent from './abstract-component';
 
+const navClass = `main-navigation__item`;
+const activeNavClass = `main-navigation__item main-navigation__item--active`;
+
+const createFilterMarkup = (filter) => {
+  const {name, count, url, isActive} = filter;
+
+  return `<a href="${url}" class="${isActive ? activeNavClass : navClass}">${name}
+            ${count ? createCounterMarkup(count) : ``}
+          </a>`;
+};
+
+const createCounterMarkup = (count) => {
+  return `<span class="main-navigation__item-count">${count}</span>`;
+};
+
 export default class NavigationComponent extends AbstractComponent {
-  constructor() {
+  constructor(filters) {
     super();
+    this._filters = filters;
   }
 
   getTemplate() {
     return `<nav class="main-navigation">
-      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
-      <a href="#watchlist" class="main-navigation__item">Watchlist
-        <span class="main-navigation__item-count">13</span>
-      </a>
-      <a href="#history" class="main-navigation__item">History
-        <span class="main-navigation__item-count">4</span>
-      </a>
-      <a href="#favorites" class="main-navigation__item">Favorites
-        <span class="main-navigation__item-count">8</span>
-      </a>
-      <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
+      ${this._filters.map((it) => createFilterMarkup(it)).join(`\n`)}
     </nav>`;
   }
 }

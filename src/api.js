@@ -1,4 +1,4 @@
-import Film from './models/data-model';
+import Movie from './models/data-model';
 
 const Method = {
   GET: `GET`,
@@ -19,12 +19,14 @@ const API = class {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
+
+    this._movies = [];
   }
 
   getFilms() {
     return this._load({url: `movies`})
-      .then((response) => response.json());
-      // .then(Film.parseFilms);
+      .then((response) => response.json())
+      .then(Movie.parseDataArray);
   }
 
   createFilm(film) {

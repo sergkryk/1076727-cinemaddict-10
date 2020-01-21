@@ -1,7 +1,8 @@
-import API from './api';
+// import API from './api';
 
 import ProfileComponent from './components/profile';
 import NavigationComponent from './components/main-nav';
+import StatsComponent from './components/stats';
 import SortComponent from './components/sort';
 import FilmsSectionComponent from './components/films-section';
 import FilmsListComponent from './components/films-list';
@@ -12,8 +13,10 @@ import FilmsExtraComponent from './components/films-extra';
 import {renderElement} from './utils/render';
 import {taskCount, ExtraHeadings} from './const';
 
-const AUTHORIZATION = `Basic dXNl91BwYXJzd29yZAo=`;
-const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
+import {generateFilters} from './mock/filter';
+
+// const AUTHORIZATION = `Basic dXNl91BwYXJzd29yZAo=`;
+// const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 
 const siteHeader = document.querySelector(`.header`);
 const siteMain = document.querySelector(`.main`);
@@ -21,8 +24,11 @@ const siteMain = document.querySelector(`.main`);
 const profileComponent = new ProfileComponent();
 renderElement(siteHeader, profileComponent);
 
-const navComponent = new NavigationComponent();
+const navComponent = new NavigationComponent(generateFilters());
 renderElement(siteMain, navComponent);
+
+const statsComponent = new StatsComponent();
+renderElement(navComponent.getElement(), statsComponent);
 
 const sortComponent = new SortComponent();
 renderElement(siteMain, sortComponent);
@@ -58,10 +64,6 @@ for (let i = 0; i < taskCount - 3; i++) {
   renderElement(filmsExtraCommentComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent());
 }
 
-const api = new API(END_POINT, AUTHORIZATION);
-
-api.getFilms()
-  .then((films) => {
-    console.log(films);
-  });
+// const api = new API(END_POINT, AUTHORIZATION);
+// api.getFilms();
 
