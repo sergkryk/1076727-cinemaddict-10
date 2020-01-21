@@ -1,3 +1,5 @@
+import API from './api';
+
 import ProfileComponent from './components/profile';
 import NavigationComponent from './components/main-nav';
 import SortComponent from './components/sort';
@@ -9,6 +11,9 @@ import FilmsExtraComponent from './components/films-extra';
 
 import {renderElement} from './utils/render';
 import {taskCount, ExtraHeadings} from './const';
+
+const AUTHORIZATION = `Basic dXNl91BwYXJzd29yZAo=`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 
 const siteHeader = document.querySelector(`.header`);
 const siteMain = document.querySelector(`.main`);
@@ -52,3 +57,11 @@ for (let i = 0; i < taskCount - 3; i++) {
 for (let i = 0; i < taskCount - 3; i++) {
   renderElement(filmsExtraCommentComponent.getElement().querySelector(`.films-list__container`), new FilmCardComponent());
 }
+
+const api = new API(END_POINT, AUTHORIZATION);
+
+api.getFilms()
+  .then((films) => {
+    console.log(films);
+  });
+

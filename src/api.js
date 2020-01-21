@@ -1,4 +1,4 @@
-import Task from './models/task.js';
+import Film from './models/data-model';
 
 const Method = {
   GET: `GET`,
@@ -21,19 +21,19 @@ const API = class {
     this._authorization = authorization;
   }
 
-  getTasks() {
-    return this._load({url: `tasks`})
-      .then((response) => response.json())
-      .then(Task.parseTasks);
+  getFilms() {
+    return this._load({url: `movies`})
+      .then((response) => response.json());
+      // .then(Film.parseFilms);
   }
 
-  createTask(task) {
+  createFilm(film) {
   }
 
-  updateTask(id, data) {
+  updateFilm(id, data) {
   }
 
-  deleteTask(id) {
+  deleteFilm(id) {
   }
 
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
