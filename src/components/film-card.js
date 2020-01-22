@@ -1,4 +1,5 @@
 import AbstractComponent from './abstract-component';
+import {getRandomNumber} from '../utils/utils';
 
 export default class FilmCardComponent extends AbstractComponent {
   constructor(movie) {
@@ -7,14 +8,14 @@ export default class FilmCardComponent extends AbstractComponent {
   }
 
   getTemplate() {
-    const {poster, title, rating, year, duration, genre, description, comments} = this._movie;
+    const {poster, title, rating, year, genre, description, comments} = this._movie;
 
     return `<article class="film-card">
               <h3 class="film-card__title">${title}</h3>
               <p class="film-card__rating">${rating}</p>
               <p class="film-card__info">
                 <span class="film-card__year">19${year}</span>
-                <span class="film-card__duration">${duration}</span>
+                <span class="film-card__duration">${getRandomNumber(1, 2)}H:${getRandomNumber(1, 30)}M</span>
                 <span class="film-card__genre">${genre}</span>
               </p>
               <img src="${poster}" alt="" class="film-card__poster">

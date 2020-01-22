@@ -1,4 +1,4 @@
-export const taskCount = 5;
+export const CARDS_NUMBER = 30;
 
 export const ExtraHeadings = {
   RATE: `Top rated`,
