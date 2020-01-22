@@ -88,6 +88,9 @@ loadMoreButton.addEventListener(`click`, () => {
   }
 });
 
+const footerCounter = document.querySelector(`.footer__statistics`);
+footerCounter.innerHTML = `<p>${movieCards.length} movies inside</p>`;
+
 // const api = new API(END_POINT, AUTHORIZATION);
 // api.getFilms();
 
