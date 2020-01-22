@@ -24,9 +24,6 @@ const CARDS_NUMBER_BY_CLICK_MORE = 5;
 const siteHeader = document.querySelector(`.header`);
 const siteMain = document.querySelector(`.main`);
 
-const profileComponent = new ProfileComponent();
-renderElement(siteHeader, profileComponent);
-
 const navComponent = new NavigationComponent(generateFilters());
 renderElement(siteMain, navComponent);
 
@@ -42,9 +39,12 @@ renderElement(siteMain, filmsSectionComponent);
 const filmsListComponent = new FilmsListComponent();
 renderElement(filmsSectionComponent.getElement(), filmsListComponent);
 
-const filmCardContainer = filmsListComponent.getElement().querySelector(`.films-list__container`);
-
 const movieCards = returnMovieCards(CARDS_NUMBER);
+
+const profileComponent = new ProfileComponent(movieCards.filter((element) => element.isWatched).length);
+renderElement(siteHeader, profileComponent);
+
+const filmCardContainer = filmsListComponent.getElement().querySelector(`.films-list__container`);
 
 let cardsToShow = CARDS_NUMBER_BY_START;
 
