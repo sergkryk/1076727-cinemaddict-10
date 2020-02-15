@@ -28,4 +28,8 @@ export default class FilmCardComponent extends AbstractComponent {
               </form>
             </article>`;
   }
+
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
