@@ -71,28 +71,42 @@ export default class PageController {
   }
 
   render(cards) {
-    const noCards = cards.length <= 0;
+    const renderLoadMoreButton = () => {
+      if (cardsToShow >= cards.length) {
+        return;
+      }
+
+      renderElement(this._filmsListComponent.getElement(), this._showMoreButton);
+      this._showMoreButton.setClickHandler(() => {
+        const prevCardsNumber = cardsToShow;
+        cardsToShow = cardsToShow + CARDS_NUMBER_BY_CLICK_MORE;
+
+        renderMovieCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
+
+        if (cardsToShow >= cards.length) {
+          removeElement(this._showMoreButton);
+        }
+      });
+    };
 
     renderElement(this._container, this._navComponent);
+    renderElement(this._navComponent.getElement(), this._statsComponent);
     renderElement(this._container, this._sortComponent);
+    renderElement(document.querySelector(`.header`), this._profileComponent);
 
-    if (noCards) {
+    if (cards.length <= 0) {
       renderElement(this._container, this._noCardsComponent);
       return;
     }
 
-    renderElement(this._navComponent.getElement(), this._statsComponent);
     renderElement(this._container, this._filmsSectionComponent);
     renderElement(this._filmsSectionComponent.getElement(), this._filmsListComponent);
-    renderElement(document.querySelector(`.header`), this._profileComponent);
 
     const cardsContainer = this._filmsListComponent.getElement().querySelector(`.films-list__container`);
-
     let cardsToShow = CARDS_NUMBER_BY_START;
-
     renderMovieCards(cards.slice(0, cardsToShow), cardsContainer);
-    renderElement(this._filmsListComponent.getElement(), this._showMoreButton);
 
+    renderElement(this._filmsListComponent.getElement(), this._showMoreButton);
     this._showMoreButton.setClickHandler(() => {
       const prevCardsNumber = cardsToShow;
       cardsToShow = cardsToShow + CARDS_NUMBER_BY_CLICK_MORE;
