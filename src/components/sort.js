@@ -15,11 +15,33 @@ const createSortItemsMarkup = () => {
 export default class NavigationComponent extends AbstractComponent {
   constructor() {
     super();
+
+    this._currenSortType = SortType.DEFAULT;
   }
 
   getTemplate() {
     return `<ul class="sort">
             ${createSortItemsMarkup()}
             </ul>`;
+  }
+
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+
+      if (evt.target.tagName !== `A`) {
+        return;
+      }
+
+      const sortType = evt.target.dataset.sortType;
+
+      if (this._currenSortType === sortType) {
+        return;
+      }
+
+      this._currenSortType = sortType;
+
+      handler(this._currenSortType);
+    });
   }
 }
