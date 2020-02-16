@@ -18,7 +18,7 @@ const CARDS_NUMBER_BY_CLICK_MORE = 5;
 
 const renderCard = (element, container) => {
   const card = new CardComponent(element);
-  const cardDetailed = new CardDetailedComponent();
+  const cardDetailed = new CardDetailedComponent(element);
 
   const onEscPressRemove = (evt) => {
     if (evt.keyCode === 27) {

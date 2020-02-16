@@ -1,13 +1,21 @@
 import AbstractComponent from './abstract-component';
 
+const userRating = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const generateUserRatingInput = (element) => {
+  return `<input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="${element}" id="rating-${element}">
+          <label class="film-details__user-rating-label" for="rating-${element}">${element}</label>`;
+};
 
 export default class CardDetailedComponent extends AbstractComponent {
-  constructor() {
+  constructor(movie) {
     super();
+
+    this._movie = movie;
   }
 
   getTemplate() {
-    // const {poster, title, rating, year, genre, description, comments} = this._movie;
+    const {poster, title, rating, date, genre, description} = this._movie;
 
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -17,7 +25,7 @@ export default class CardDetailedComponent extends AbstractComponent {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/the-great-flamarion.jpg" alt="">
+            <img class="film-details__poster-img" src="${poster}" alt="">
 
             <p class="film-details__age">18+</p>
           </div>
@@ -25,12 +33,12 @@ export default class CardDetailedComponent extends AbstractComponent {
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">The Great Flamarion</h3>
-                <p class="film-details__title-original">Original: The Great Flamarion</p>
+                <h3 class="film-details__title">${title}</h3>
+                <p class="film-details__title-original">Original: ${title}</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">8.9</p>
+                <p class="film-details__total-rating">${rating}</p>
                 <p class="film-details__user-rating">Your rate 9</p>
               </div>
             </div>
@@ -50,7 +58,7 @@ export default class CardDetailedComponent extends AbstractComponent {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">30 March 1945</td>
+                <td class="film-details__cell">${date}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
@@ -63,14 +71,14 @@ export default class CardDetailedComponent extends AbstractComponent {
               <tr class="film-details__row">
                 <td class="film-details__term">Genres</td>
                 <td class="film-details__cell">
-                  <span class="film-details__genre">Drama</span>
-                  <span class="film-details__genre">Film-Noir</span>
-                  <span class="film-details__genre">Mystery</span></td>
+                  <span class="film-details__genre">${genre}</span>
+                  <span class="film-details__genre">${genre}</span>
+                  <span class="film-details__genre">${genre}</span></td>
               </tr>
             </table>
 
             <p class="film-details__film-description">
-              The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.
+              ${description}
             </p>
           </div>
         </div>
@@ -95,7 +103,7 @@ export default class CardDetailedComponent extends AbstractComponent {
 
           <div class="film-details__user-score">
             <div class="film-details__user-rating-poster">
-              <img src="./images/posters/the-great-flamarion.jpg" alt="film-poster" class="film-details__user-rating-img">
+              <img src="${poster}" alt="${title}" class="film-details__user-rating-img">
             </div>
 
             <section class="film-details__user-rating-inner">
@@ -104,33 +112,7 @@ export default class CardDetailedComponent extends AbstractComponent {
               <p class="film-details__user-rating-feelings">How you feel it?</p>
 
               <div class="film-details__user-rating-score">
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="1" id="rating-1">
-                <label class="film-details__user-rating-label" for="rating-1">1</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="2" id="rating-2">
-                <label class="film-details__user-rating-label" for="rating-2">2</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="3" id="rating-3">
-                <label class="film-details__user-rating-label" for="rating-3">3</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="4" id="rating-4">
-                <label class="film-details__user-rating-label" for="rating-4">4</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="5" id="rating-5">
-                <label class="film-details__user-rating-label" for="rating-5">5</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="6" id="rating-6">
-                <label class="film-details__user-rating-label" for="rating-6">6</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="7" id="rating-7">
-                <label class="film-details__user-rating-label" for="rating-7">7</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="8" id="rating-8">
-                <label class="film-details__user-rating-label" for="rating-8">8</label>
-
-                <input type="radio" name="score" class="film-details__user-rating-input visually-hidden" value="9" id="rating-9" checked>
-                <label class="film-details__user-rating-label" for="rating-9">9</label>
-
+              ${userRating.map((it) => generateUserRatingInput(it)).join(`\n`)}
               </div>
             </section>
           </div>

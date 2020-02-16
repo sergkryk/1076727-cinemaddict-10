@@ -18,7 +18,7 @@ export default class FilmCardComponent extends AbstractComponent {
                 <span class="film-card__duration">${getRandomNumber(1, 2)}H:${getRandomNumber(1, 30)}M</span>
                 <span class="film-card__genre">${genre}</span>
               </p>
-              <img src="${poster}" alt="" class="film-card__poster">
+              <img src="${poster}" alt="${title}" class="film-card__poster">
               <p class="film-card__description">${description}</p>
               <a class="film-card__comments">${comments.length} comments</a>
               <form class="film-card__controls">
