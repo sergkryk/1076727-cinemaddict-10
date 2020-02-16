@@ -1,12 +1,15 @@
 import AbstractComponent from './abstract-component';
-import {SortOptions} from '../const';
 
-const createSortItemsMarkup = (element) => {
-  if (element === `default`) {
-    return `<li><a href="#" class="sort__button sort__button--active">Sort by ${element}</a></li>`;
-  }
+export const SortType = {
+  RATING: `by rating`,
+  DATE: `by date`,
+  DEFAULT: `by default`,
+};
 
-  return `<li><a href="#" class="sort__button">Sort by ${element}</a></li>`;
+const createSortItemsMarkup = () => {
+  return `<li><a href="#" data-sort-type="${SortType.DEFAULT}" class="sort__button sort__button--active">Sort ${SortType.DEFAULT}</a></li>
+          <li><a href="#" data-sort-type="${SortType.DATE}" class="sort__button">Sort ${SortType.DATE}</a></li>
+          <li><a href="#" data-sort-type="${SortType.RATING}" class="sort__button">Sort ${SortType.RATING}</a></li>`;
 };
 
 export default class NavigationComponent extends AbstractComponent {
@@ -16,7 +19,7 @@ export default class NavigationComponent extends AbstractComponent {
 
   getTemplate() {
     return `<ul class="sort">
-              ${SortOptions.map((element) => createSortItemsMarkup(element)).join(`\n`)}
+            ${createSortItemsMarkup()}
             </ul>`;
   }
 }
