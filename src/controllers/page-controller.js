@@ -117,7 +117,7 @@ export default class PageController {
 
       switch (sortType) {
         case SortType.DATE:
-          sortedCards = cards.slice().sort((a, b) => a.date - b.date);
+          sortedCards = cards.slice().sort((a, b) => b.date - a.date);
           break;
         case SortType.RATING:
           sortedCards = cards.slice().sort((a, b) => b.rating - a.rating);
