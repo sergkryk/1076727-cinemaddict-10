@@ -16,42 +16,46 @@ import {ExtraHeadings} from '../const';
 const CARDS_NUMBER_BY_START = 5;
 const CARDS_NUMBER_BY_CLICK_MORE = 5;
 
-const renderMovieCards = (array, container) => {
-  array.forEach((element) => {
-    const card = new CardComponent(element);
-    const cardDetailed = new CardDetailedComponent();
+const renderCard = (element, container) => {
+  const card = new CardComponent(element);
+  const cardDetailed = new CardDetailedComponent();
 
-    const onEscPressRemove = (evt) => {
-      if (evt.keyCode === 27) {
+  const onEscPressRemove = (evt) => {
+    if (evt.keyCode === 27) {
+      removeElement(cardDetailed);
+      document.removeEventListener(`keydown`, onEscPressRemove);
+    }
+  };
+
+  card.setClickHandler((evt) => {
+    if (evt.target.tagName === `IMG` || evt.target.tagName === `A` || evt.target.tagName === `H3`) {
+      renderElement(container, cardDetailed);
+      cardDetailed.setCloseButtonClickHandler(() => {
         removeElement(cardDetailed);
-        document.removeEventListener(`keydown`, onEscPressRemove);
-      }
-    };
+      });
+      document.addEventListener(`keydown`, onEscPressRemove);
+    }
+  });
 
-    card.setClickHandler((evt) => {
-      if (evt.target.tagName === `IMG` || evt.target.tagName === `A` || evt.target.tagName === `H3`) {
-        renderElement(container, cardDetailed);
-        cardDetailed.setCloseButtonClickHandler(() => {
-          removeElement(cardDetailed);
-        });
-        document.addEventListener(`keydown`, onEscPressRemove);
-      }
-    });
+  renderElement(container, card);
+};
 
-    renderElement(container, card);
+const renderCards = (cards, container) => {
+  cards.forEach((card) => {
+    renderCard(card, container);
   });
 };
 
 const renderTopRated = (container, cards) => {
   const topRated = new FilmsExtraComponent(ExtraHeadings.RATE);
   renderElement(container, topRated);
-  renderMovieCards(cards.slice().sort((a, b) => b.rating - a.rating).slice(0, 2), topRated.getElement().querySelector(`.films-list__container`));
+  renderCards(cards.slice().sort((a, b) => b.rating - a.rating).slice(0, 2), topRated.getElement().querySelector(`.films-list__container`));
 };
 
 const renderMostCommented = (container, cards) => {
   const mostCommented = new FilmsExtraComponent(ExtraHeadings.COMMENT);
   renderElement(container, mostCommented);
-  renderMovieCards(cards.slice().sort((a, b) => b.comments.length - a.comments.length).slice(0, 2), mostCommented.getElement().querySelector(`.films-list__container`));
+  renderCards(cards.slice().sort((a, b) => b.comments.length - a.comments.length).slice(0, 2), mostCommented.getElement().querySelector(`.films-list__container`));
 };
 
 export default class PageController {
@@ -81,7 +85,7 @@ export default class PageController {
         const prevCardsNumber = cardsToShow;
         cardsToShow = cardsToShow + CARDS_NUMBER_BY_CLICK_MORE;
 
-        renderMovieCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
+        renderCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
 
         if (cardsToShow >= cards.length) {
           removeElement(this._showMoreButton);
@@ -104,14 +108,14 @@ export default class PageController {
 
     const cardsContainer = this._filmsListComponent.getElement().querySelector(`.films-list__container`);
     let cardsToShow = CARDS_NUMBER_BY_START;
-    renderMovieCards(cards.slice(0, cardsToShow), cardsContainer);
+    renderCards(cards.slice(0, cardsToShow), cardsContainer);
 
     renderElement(this._filmsListComponent.getElement(), this._showMoreButton);
     this._showMoreButton.setClickHandler(() => {
       const prevCardsNumber = cardsToShow;
       cardsToShow = cardsToShow + CARDS_NUMBER_BY_CLICK_MORE;
 
-      renderMovieCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
+      renderCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
 
       if (cardsToShow >= cards.length) {
         removeElement(this._showMoreButton);
