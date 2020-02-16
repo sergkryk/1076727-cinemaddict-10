@@ -41,7 +41,7 @@ export default class NavigationComponent extends AbstractComponent {
 
       this._currenSortType = sortType;
 
-      handler(this._currenSortType);
+      handler(this._currenSortType, evt);
     });
   }
 }

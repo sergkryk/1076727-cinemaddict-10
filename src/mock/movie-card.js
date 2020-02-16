@@ -78,13 +78,21 @@ const getComments = () => {
   return comments.filter(() => getRandomBoolean()).map((element, i) => i);
 };
 
+const getRandomPastDate = () => {
+  const targetDate = new Date();
+  const diffValue = getRandomNumber(0, 30000) * -1;
+
+  targetDate.setDate(targetDate.getDate() + diffValue);
+
+  return targetDate;
+};
 
 const generateMovieCard = () => {
   return {
     poster: getPoster(),
     title: getTitle(),
     rating: getRating(),
-    year: getRandomNumber(1, 90),
+    date: getRandomPastDate(),
     duration: getRandomNumber(60, 180),
     genre: getGenre(),
     description: description.filter(() => getRandomBoolean()).slice(0, 3),

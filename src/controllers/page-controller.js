@@ -1,7 +1,7 @@
 import CardComponent from '../components/card';
 import CardDetailedComponent from '../components/card-detailed';
 import NavigationComponent from '../components/main-nav';
-import SortComponent from '../components/sort';
+import SortComponent, {SortType} from '../components/sort';
 import StatsComponent from '../components/stats';
 import FilmsSectionComponent from '../components/films-section';
 import FilmsListComponent from '../components/films-list';
@@ -109,15 +109,33 @@ export default class PageController {
     const cardsContainer = this._filmsListComponent.getElement().querySelector(`.films-list__container`);
     let cardsToShow = CARDS_NUMBER_BY_START;
     renderCards(cards.slice(0, cardsToShow), cardsContainer);
+    renderLoadMoreButton();
 
-    renderElement(this._filmsListComponent.getElement(), this._showMoreButton);
-    this._showMoreButton.setClickHandler(() => {
-      const prevCardsNumber = cardsToShow;
-      cardsToShow = cardsToShow + CARDS_NUMBER_BY_CLICK_MORE;
+    this._sortComponent.setSortTypeChangeHandler((sortType, evt) => {
+      let sortedCards = [];
+      const links = this._sortComponent.getElement().querySelectorAll(`a`);
 
-      renderCards(cards.slice(prevCardsNumber, cardsToShow), cardsContainer);
+      switch (sortType) {
+        case SortType.DATE:
+          sortedCards = cards.slice().sort((a, b) => a.date - b.date);
+          break;
+        case SortType.RATING:
+          sortedCards = cards.slice().sort((a, b) => b.rating - a.rating);
+          break;
+        case SortType.DEFAULT:
+          sortedCards = cards.slice(0, cardsToShow);
+          break;
+      }
 
-      if (cardsToShow >= cards.length) {
+      cardsContainer.innerHTML = ``;
+      renderCards(sortedCards, cardsContainer);
+
+      links.forEach((it) => it.classList.remove(`sort__button--active`));
+      evt.target.classList.add(`sort__button--active`);
+
+      if (sortType === SortType.DEFAULT) {
+        renderLoadMoreButton();
+      } else {
         removeElement(this._showMoreButton);
       }
     });
